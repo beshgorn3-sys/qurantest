@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختبار الشامل للقرآن (نسخة مُحسَّنة)</title>
+    
+    <!-- ربط ملف التنسيقات الخارجي -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- زر شرح الاختبارات -->
+    <button id="showHelpBtn">شرح الاختبارات</button>
+
+    <!-- الشاشة المنبثقة (Modal) للشرح -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>شرح أنواع الاختبارات</h2>
+            <ul>
+                <li><strong>اختر التالي:</strong> استمع للآية أو اقرأها، ثم اختر الآية الصحيحة التي تليها من الخيارات.</li>
+                <li><strong>اختر السابق:</strong> استمع للآية أو اقرأها، ثم اختر الآية التي تسبقها مباشرة.</li>
+                <li><strong>الآية الدخيلة:</strong> استمع أو اقرأ عدة آيات، إحداها ليست من نفس الصفحة. مهمتك هي تحديد الآية الدخيلة.</li>
+                <li><strong>أكمل الآية:</strong> أظهر لك جزء من آية، واختر الإكمال الصحيح من الخيارات.</li>
+                <li><strong>ترتيب الكلمات:</strong> ترتيب كلمات آية مبعثرة لتكوين الآية الصحيحة.</li>
+                <li><strong>ترتيب الآيات:</strong> استمع أو اقرأ عدة آيات غير مرتبة، ثم رتبها بالترتيب الصحيح.</li>
+                <li><strong>حدود الصفحة:</strong> اختر أول أو آخر آية في الصفحة.</li>
+                <li><strong>تحديد موقع الآية:</strong> حدد ترتيب الآية في الصفحة.</li>
+                <li><strong>تخمين القارئ:</strong> استمع للآية بصوت أحد القراء المشهورين، وحاول تخمين من هو.</li>
+                <li><strong>ربط الصفحات:</strong> استمع لآخر آية في صفحة واختر أول آية في الصفحة التالية، أو العكس.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- قسم تسجيل الدخول -->
+        <div id="loginSection">
+            <h1>تسجيل الدخول</h1>
+            <div class="login-section">
+                <label for="loginUsername">اسم المستخدم:</label>
+                <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم">
+                
+                <label for="loginPassword">كلمة المرور:</label>
+                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+                
+                <button id="loginBtn" class="main-btn">تسجيل الدخول</button>
+                <div id="loginStatus" class="login-status"></div>
+            </div>
+        </div>
+
+        <!-- قسم الإعدادات -->
+        <div id="settings" class="hidden">
+            <div class="user-info">
+                <span>مرحباً: <span id="loggedInUser"></span></span>
+                <button id="logoutBtn" class="logout-btn">تسجيل الخروج</button>
+            </div>
+            
+            <h1>الاختبار الصوتي للقرآن</h1>
+            <p style="text-align: center;">اختبارات ذكية ومتنوعة لتثبيت الحفظ.</p>
+            
+            <label for="numQuestions">عدد الأسئلة (1-25):</label>
+            <input type="number" id="numQuestions" min="1" max="25" value="10">
+
+            <label for="reciter">اختر الشيخ (للأسئلة الصوتية):</label>
+            <select id="reciter">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </select>
+            
+            <label>اختر مجال المراجعة:</label>
+            <div id="radio-group">
+                <input type="radio" id="byPage" name="selectionType" value="page" checked>
+                <label for="byPage">صفحة واحدة</label>
+                <input type="radio" id="byRange" name="selectionType" value="range" style="margin-right: 20px;">
+                <label for="byRange">مجال من الصفحات</label>
+            </div>
+
+            <div id="pageInput">
+                <label for="pageNumber">رقم الصفحة (1 - 604):</label>
+                <input type="number" id="pageNumber" min="1" max="604" value="50">
+            </div>
+            <div id="rangeInput" class="hidden">
+                <label for="startPage">من صفحة:</label>
+                <input type="number" id="startPage" min="1" max="604" value="50">
+                <label for="endPage">إلى صفحة:</label>
+                <input type="number" id="endPage" min="1" max="604" value="55">
+            </div>
+            <button id="startBtn" class="main-btn">بدء الاختبار</button>
+        </div>
+
+        <!-- قسم الاختبار -->
+        <div id="quizArea" class="hidden">
+            <h2>مرحباً يا <span id="quizUserName"></span>!</h2>
+            <div id="loader">جاري تحضير السؤال...</div>
+            <div id="quizContent" class="hidden">
+                <div id="questionContainer"></div>
+                <audio id="audioPlayer" controls></audio>
+                <div id="answer-container"></div>
+                <div id="resultMessage" class="hidden"></div>
+                <button id="nextQuestionBtn" class="main-btn hidden">السؤال التالي</button>
+            </div>
+        </div>
+
+        <!-- قسم النتائج -->
+        <div id="results" class="hidden">
+            <h2>انتهى الاختبار!</h2>
+            <p id="finalScore"></p>
+            <p id="google-status"></p>
+            <p id="telegram-status"></p>
+            <button class="main-btn" onclick="location.reload()">البدء من جديد</button>
+        </div>
+    </div>
+
+    <!-- ربط ملفات JavaScript في نهاية الصفحة لتسريع التحميل -->
+    <!-- ملف أنواع الأسئلة يجب أن يأتي أولاً -->
+    <script src="question.js"></script>
+    <!-- الملف الرئيسي للمنطق والتطبيق -->
+    <script src="script.js"></script>
+
+</body>
+</html>
